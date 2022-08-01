@@ -2,8 +2,8 @@
 using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Application.Interfaces;
+using OrderService.Application.Saga;
 using OrderService.Domain.Entities;
-using OrderService.Infrastructure.Saga;
 
 namespace OrderService.Infrastructure.Persistence;
 

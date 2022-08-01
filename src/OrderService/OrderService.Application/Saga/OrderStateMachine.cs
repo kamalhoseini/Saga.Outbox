@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Share.Contract.Events;
 
-namespace OrderService.Infrastructure.Saga;
+namespace OrderService.Application.Saga;
 
 public class OrderStateMachine : MassTransitStateMachine<OrderState>
 {

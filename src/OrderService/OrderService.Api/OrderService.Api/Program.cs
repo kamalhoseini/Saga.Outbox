@@ -1,7 +1,6 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Application;
-using OrderService.Application.Orders.EventHandlers;
 using OrderService.Infrastructure;
 using OrderService.Infrastructure.Persistence;
 
@@ -11,6 +10,7 @@ builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var massTransitConfig = builder.Configuration.GetSection("MassTransit");
+
 // MassTraansit configuration
 builder.Services.AddMassTransit(x =>
 {
@@ -24,15 +24,14 @@ builder.Services.AddMassTransit(x =>
 
     x.UsingRabbitMq((context, cfg) =>
     {
-        //cfg.Host(massTransitConfig["Host"],
-        //    h =>
-        //    {
-        //        h.Username(massTransitConfig["Username"]);
-        //        h.Password(massTransitConfig["Password"]);
-        //    }
-        //);
+        cfg.Host(massTransitConfig["Host"],
+            h =>
+            {
+                h.Username(massTransitConfig["Username"]);
+                h.Password(massTransitConfig["Password"]);
+            }
+        );
         cfg.AutoStart = true;
-        //cfg.ConfigureEndpoints(context);
     });
 });
 

@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace OrderService.Infrastructure.Saga;
+namespace OrderService.Application.Saga;
 
 public class OrderState : SagaStateMachineInstance
 {

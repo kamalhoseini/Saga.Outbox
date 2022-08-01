@@ -1,11 +1,11 @@
-namespace OrderService.Infrastructure.Saga;
+namespace OrderService.Application.Saga;
 
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using OrderService.Infrastructure.Persistence;
 
-public class OrderStateDefinition :
+public class OrderStateDefinition<TDbContext> :
     SagaDefinition<OrderState>
+     where TDbContext : DbContext
 {
     readonly IServiceProvider _provider;
 
@@ -19,6 +19,6 @@ public class OrderStateDefinition :
     {
         endpointConfigurator.UseMessageRetry(r => r.Intervals(10, 50, 100, 1000, 1000, 1000, 1000, 1000));
 
-        endpointConfigurator.UseEntityFrameworkOutbox<OrderContext>(_provider);
+        endpointConfigurator.UseEntityFrameworkOutbox<TDbContext>(_provider);
     }
 }

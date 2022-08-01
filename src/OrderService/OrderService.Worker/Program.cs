@@ -2,9 +2,9 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Application;
 using OrderService.Application.Orders.EventHandlers;
+using OrderService.Application.Saga;
 using OrderService.Infrastructure;
 using OrderService.Infrastructure.Persistence;
-using OrderService.Infrastructure.Saga;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
@@ -36,9 +36,8 @@ var host = Host.CreateDefaultBuilder(args)
 
             x.AddConsumer<OrderAcceptedEventHandler>();
             x.AddConsumer<OrderRejectedEventHandler>();
-            //x.AddConsumer<OrderSubmittedEventHandler>();
 
-            x.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateDefinition>()
+            x.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateDefinition<OrderContext>>()
                 .EntityFrameworkRepository(r =>
                 {
                     r.ExistingDbContext<OrderContext>();
@@ -47,13 +46,13 @@ var host = Host.CreateDefaultBuilder(args)
 
             x.UsingRabbitMq((context, cfg) =>
             {
-                //cfg.Host(massTransitConfig["Host"],
-                //    h =>
-                //    {
-                //        h.Username(massTransitConfig["Username"]);
-                //        h.Password(massTransitConfig["Password"]);
-                //    }
-                //);
+                cfg.Host(massTransitConfig["Host"],
+                    h =>
+                    {
+                        h.Username(massTransitConfig["Username"]);
+                        h.Password(massTransitConfig["Password"]);
+                    }
+                );
                 cfg.ConfigureEndpoints(context);
             });
         });

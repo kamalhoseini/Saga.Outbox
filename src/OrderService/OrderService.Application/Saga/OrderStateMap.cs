@@ -1,4 +1,4 @@
-namespace OrderService.Infrastructure.Saga;
+namespace OrderService.Application.Saga;
 
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
