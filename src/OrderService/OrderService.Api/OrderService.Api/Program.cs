@@ -22,9 +22,9 @@ builder.Services.AddMassTransit(x =>
         o.UseBusOutbox();
     });
 
-    x.AddConsumer<OrderAcceptedEventHandler>();
-    x.AddConsumer<OrderRejectedEventHandler>();
-    x.AddConsumer<OrderSubmittedEventHandler>();
+    //x.AddConsumer<OrderAcceptedEventHandler>();
+    //x.AddConsumer<OrderRejectedEventHandler>();
+    //x.AddConsumer<OrderSubmittedEventHandler>();
 
     x.UsingRabbitMq((context, cfg) =>
     {

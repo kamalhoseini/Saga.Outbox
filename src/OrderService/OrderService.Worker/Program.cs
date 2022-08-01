@@ -1,11 +1,16 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using OrderService.Application;
+using OrderService.Application.Orders.EventHandlers;
+using OrderService.Infrastructure;
 using OrderService.Infrastructure.Persistence;
 using OrderService.Infrastructure.Saga;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
+        services.AddApplication(hostContext.Configuration);
+        services.AddInfrastructure(hostContext.Configuration);
 
         services.AddDbContext<OrderContext>(x =>
         {
@@ -28,6 +33,10 @@ var host = Host.CreateDefaultBuilder(args)
             });
 
             x.SetKebabCaseEndpointNameFormatter();
+
+            x.AddConsumer<OrderAcceptedEventHandler>();
+            x.AddConsumer<OrderRejectedEventHandler>();
+            x.AddConsumer<OrderSubmittedEventHandler>();
 
             x.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateDefinition>()
                 .EntityFrameworkRepository(r =>
