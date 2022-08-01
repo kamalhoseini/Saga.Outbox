@@ -36,7 +36,7 @@ var host = Host.CreateDefaultBuilder(args)
 
             x.AddConsumer<OrderAcceptedEventHandler>();
             x.AddConsumer<OrderRejectedEventHandler>();
-            x.AddConsumer<OrderSubmittedEventHandler>();
+            //x.AddConsumer<OrderSubmittedEventHandler>();
 
             x.AddSagaStateMachine<OrderStateMachine, OrderState, OrderStateDefinition>()
                 .EntityFrameworkRepository(r =>
