@@ -5,6 +5,9 @@ namespace OrderService.Application.Saga;
 
 public class OrderStateMachine : MassTransitStateMachine<OrderState>
 {
+    /// <summary>
+    /// When using .Publish(event) in a During() section, which does not raise an event that is tracked in the next step..!!!!!!!!!
+    /// </summary>
     public OrderStateMachine()
     {
         InstanceState(c => c.CurrentState);
@@ -40,19 +43,20 @@ public class OrderStateMachine : MassTransitStateMachine<OrderState>
     }
     private void ConfigureCorrelationIds()
     {
+        // Add only events that are in the When() section of the state machine !!!!!!!!!!!!!!!!!!!
         Event(() => OrderStartedEvent, x => x.CorrelateById(x => x.Message.OrderId));
         Event(() => OrderAcceptedEvent, x => x.CorrelateById(x => x.Message.CorrelationId));
         Event(() => OrderRejectedEvent, x => x.CorrelateById(x => x.Message.CorrelationId));
     }
 
-    public State Started { get; private set; } = default!;
-    public State Submitted { get; private set; } = default!;
-    public State Accepted { get; private set; } = default!;
-    public State Completed { get; private set; } = default!;
-    public State Rejected { get; private set; } = default!;
-    public Event<OrderStarted> OrderStartedEvent { get; set; } = default!;
-    public Event<OrderSubmitted> OrderSubmittedEvent { get; set; } = default!;
-    public Event<OrderAccepted> OrderAcceptedEvent { get; set; } = default!;
-    public Event<OrderRejected> OrderRejectedEvent { get; set; } = default!;
+    public State Started { get; } = default!;
+    public State Submitted { get; } = default!;
+    public State Accepted { get; } = default!;
+    public State Completed { get; } = default!;
+    public State Rejected { get; } = default!;
+    public Event<OrderStarted> OrderStartedEvent { get; } = default!;
+    public Event<OrderSubmitted> OrderSubmittedEvent { get; } = default!;
+    public Event<OrderAccepted> OrderAcceptedEvent { get; } = default!;
+    public Event<OrderRejected> OrderRejectedEvent { get; } = default!;
 
 }

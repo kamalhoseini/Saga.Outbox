@@ -34,6 +34,7 @@ internal class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, G
             Price = request.Price
         });
 
+        // In the end, because the message must be saved in the outbox;
         await _context.SaveChangesAsync();
 
         return order.Id;
